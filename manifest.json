@@ -1,0 +1,16 @@
+{
+  "short_name": "Мій Банк",
+  "name": "Мій Банківський Додаток",
+  "icons": [
+    {
+      "src": "photo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "./",
+  "theme_color": "#000000"
+}

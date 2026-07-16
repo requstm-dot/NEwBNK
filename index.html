@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Мій Банк</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Мій Банк">
+    
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <style>
+        @font-face { font-family: 'Manrope'; src: url('Manrope.ttf'); }
+        @font-face { font-family: 'Manrope-Bold'; src: url('Manrope-Bold.ttf'); }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: black; color: white; overflow: hidden;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .container {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }
+
+        .editable { 
+            position: absolute; border: none; background: transparent; 
+            color: inherit; font-family: inherit; outline: none; white-space: nowrap; 
+            min-width: 15px; min-height: 1.2em; display: inline-block;
+            -webkit-user-select: text;
+        }
+
+        #warning_overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none; 
+            align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .warning-box {
+            background: #1c1c1e; padding: 25px; border-radius: 20px;
+            width: 80%; max-width: 300px; text-align: center;
+            border: 1px solid #333;
+        }
+        .warning-box h2 { font-size: 2vh; margin-bottom: 15px; color: #ff9500; }
+        .warning-box p { font-size: 1.6vh; line-height: 1.4; color: #ccc; margin-bottom: 20px; }
+        .warning-box button {
+            background: #ff9500; border: none; padding: 12px 30px;
+            color: white; border-radius: 10px; font-family: 'Manrope-Bold'; font-size: 1.6vh;
+        }
+
+        #profile_letter { left: 4.0%; top: 7.3%; font-family: 'Manrope-Bold'; font-size: 2.7vh; color: #cc7600; width: 4vh; height: 4vh; display: flex; align-items: center; justify-content: center; } 
+
+        #card_digits { left: 24%; top: 34%; font-size: 1.8vh; }
+        #card_date   { left: 37%; top: 34%; font-size: 1.8vh; }
+        #balance     { right: 17.5%; top: 41.2%; font-size: 2.1vh; width: 60%; text-align: right; }
+        #balance span { font-size: 1.9vh; }
+
+        .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
+        #img_1 { left: 4%; top: 68.3%; }
+        #img_2 { left: 4%; top: 75%; }
+        #img_3 { left: 4%; top: 81.7%; }
+
+        #name_1 { left: 20%; top: 69.95%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_1 { left: 20%; top: 72.25%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_1 { right: 7.5%; top: 69.95%; }
+
+        #name_2 { left: 20%; top: 76.65%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_2 { left: 20%; top: 78.95%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_2 { right: 7.5%; top: 76.65%; }
+
+        #name_3 { left: 20%; top: 83.5%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_3 { left: 20%; top: 85.8%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_3 { right: 7.5%; top: 83.5%; }
+
+        .sum-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; }
+        .plus { color: #5cc033 !important; }
+        .minus { color: #fff !important; } 
+        
+        .small-text { font-size: 1.5vh; font-family: 'Manrope-Bold'; }
+        .uah { margin-left: 4px; color: inherit; }
+        .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
+    </style>
+</head>
+<body>
+    <div id="warning_overlay">
+        <div class="warning-box">
+            <h2>УВАГА</h2>
+            <p>Цей додаток створено виключно з навчальною та розважальною метою. Він не є реальним банком.</p>
+            <button onclick="acceptWarning()">Я погоджуюсь</button>
+        </div>
+    </div>
+
+    <div id="main_container" class="container" spellcheck="false">
+        <div id="profile_letter" class="editable" contenteditable="true">Р</div>
+
+        <div id="card_digits" class="editable" contenteditable="true">4504</div>
+        <div id="card_date" class="editable" contenteditable="true">15/15</div>
+        <div id="balance" class="editable" contenteditable="true">55 345<span>.50</span></div>
+
+        <img id="img_1" src="minus.png" class="transaction-icon">
+        <div id="name_1" class="editable" contenteditable="true">Сільпо</div>
+        <div id="date_1" class="editable" contenteditable="true">20 лютого, 23:49</div>
+        <div id="cont_1" class="sum-container">
+            <div id="sum_1" class="editable sum-val" contenteditable="true">- 150.00</div>
+            <span class="uah small-text">UAH</span>
+        </div>
+
+        <img id="img_2" src="plus.png" class="transaction-icon">
+        <div id="name_2" class="editable" contenteditable="true">Богаткін Д.</div>
+        <div id="date_2" class="editable" contenteditable="true">20 лютого, 23:48</div>
+        <div id="cont_2" class="sum-container">
+            <div id="sum_2" class="editable sum-val" contenteditable="true">+ 1 200.00</div>
+            <span class="uah small-text">UAH</span>
+        </div>
+
+        <img id="img_3" src="plus.png" class="transaction-icon">
+        <div id="name_3" class="editable" contenteditable="true">PAYSEND</div>
+        <div id="date_3" class="editable" contenteditable="true">20 лютого, 23:26</div>
+        <div id="cont_3" class="sum-container">
+            <div id="sum_3" class="editable sum-val" contenteditable="true">+ 2 400.00</div>
+            <span class="uah small-text">UAH</span>
+        </div>
+    </div>
+
+    <script>
+        function acceptWarning() {
+            document.getElementById('warning_overlay').style.display = 'none';
+            localStorage.setItem('warningAccepted', 'true');
+        }
+
+        function saveData() {
+            const data = {};
+            document.querySelectorAll('.editable').forEach(el => {
+                data[el.id] = el.innerHTML;
+            });
+            localStorage.setItem('bankSave', JSON.stringify(data));
+        }
+
+        function loadData() {
+            if (localStorage.getItem('warningAccepted') !== 'true') {
+                document.getElementById('warning_overlay').style.display = 'flex';
+            }
+
+            // Динамічне завантаження фону з обходом кешу
+            document.getElementById('main_container').style.backgroundImage = "url('photo.png?v=" + Date.now() + "')";
+
+            const saved = localStorage.getItem('bankSave');
+            if (saved) {
+                const data = JSON.parse(saved);
+                for (let id in data) {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.innerHTML = data[id];
+                        if (el.classList.contains('sum-val')) updateRow(el, false);
+                    }
+                }
+            }
+        }
+
+        function updateRow(el, shouldSave = true) {
+            const text = el.innerText.trim();
+            const container = el.parentElement;
+            const id = el.id.split('_')[1];
+            const img = document.getElementById('img_' + id);
+
+            if (text.startsWith('+')) {
+                container.classList.remove('minus'); container.classList.add('plus');
+                if (img) img.src = 'plus.png?v=' + Date.now();
+            } else {
+                container.classList.remove('plus'); container.classList.add('minus');
+                if (img) img.src = 'minus.png?v=' + Date.now();
+            }
+
+            if (text.includes('.') && !el.querySelector('.small-text')) {
+                const parts = text.split('.');
+                el.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
+                
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            if (shouldSave) saveData();
+        }
+
+        window.addEventListener('load', loadData);
+
+        document.querySelectorAll('.editable').forEach(input => {
+            // Налаштування для кожного інпуту
+            input.addEventListener('input', () => {
+                if (input.classList.contains('sum-val')) {
+                    updateRow(input);
+                } else {
+                    saveData();
+                }
+            });
+
+            // Виправлення: чистий текст без великих стилів при вставці
+            input.onpaste = function(e) {
+                e.preventDefault();
+                const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand("insertHTML", false, text);
+            };
+
+            // Виправлення: захист від зникнення поля, якщо все стерти
+            input.onblur = function() {
+                if (this.innerText.trim() === "") {
+                    this.innerHTML = "&nbsp;";
+                    saveAll();
+                }
+            };
+        });
+
+        // Заборона контекстного меню
+        window.oncontextmenu = (e) => { e.preventDefault(); return false; };
+    </script>
+</body>
+</html>
