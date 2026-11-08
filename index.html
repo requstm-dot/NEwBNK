@@ -62,6 +62,17 @@
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
+        /* Стилі для рядків "Кредитний ліміт" та "Власні кошти" (як на скріншоті) */
+        .sub-info-label { font-family: 'Manrope'; font-size: 1.5vh; color: #aaa; }
+        .sub-info-val { font-family: 'Manrope-Bold'; font-size: 1.5vh; color: #fff; }
+        .sub-info-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 7.5%; }
+
+        #credit_limit_label { left: 10%; top: 45.2%; }
+        #credit_limit_cont  { top: 45.2%; }
+
+        #own_funds_label    { left: 10%; top: 48.5%; }
+        #own_funds_cont     { top: 48.5%; }
+
         .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
         #img_1 { left: 4%; top: 66.3%; }
         #img_2 { left: 4%; top: 73%; }
@@ -100,31 +111,43 @@
     <div id="main_container" class="container" spellcheck="false">
         <div id="profile_letter" class="editable" contenteditable="true">Р</div>
 
-        <div id="card_digits" class="editable" contenteditable="true">4504</div>
-        <div id="card_date" class="editable" contenteditable="true">15/15</div>
-        <div id="balance" class="editable" contenteditable="true">55 345<span>.50 UAH</span></div>
+        <div id="card_digits" class="editable" contenteditable="true">8801</div>
+        <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
+        <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
+
+        <!-- Блок: Кредитний ліміт -->
+        <div id="credit_limit_label" class="editable sub-info-label" contenteditable="true">Кредитний ліміт</div>
+        <div id="credit_limit_cont" class="sub-info-container">
+            <div id="credit_limit_val" class="editable sub-info-val" contenteditable="true">0.00</div>
+        </div>
+
+        <!-- Блок: Власні кошти -->
+        <div id="own_funds_label" class="editable sub-info-label" contenteditable="true">Власні кошти</div>
+        <div id="own_funds_cont" class="sub-info-container">
+            <div id="own_funds_val" class="editable sub-info-val" contenteditable="true">1.00</div>
+        </div>
 
         <img id="img_1" src="minus.png" class="transaction-icon">
-        <div id="name_1" class="editable" contenteditable="true">Сільпо</div>
-        <div id="date_1" class="editable" contenteditable="true">20 лютого, 23:49</div>
+        <div id="name_1" class="editable" contenteditable="true">Зі своєї картки *4946</div>
+        <div id="date_1" class="editable" contenteditable="true">8 листопада, 17:47</div>
         <div id="cont_1" class="sum-container">
-            <div id="sum_1" class="editable sum-val" contenteditable="true">- 150.00</div>
+            <div id="sum_1" class="editable sum-val" contenteditable="true">+ 1.00</div>
             <span class="uah small-text">UAH</span>
         </div>
 
         <img id="img_2" src="plus.png" class="transaction-icon">
-        <div id="name_2" class="editable" contenteditable="true">Богаткін Д.</div>
-        <div id="date_2" class="editable" contenteditable="true">20 лютого, 23:48</div>
+        <div id="name_2" class="editable" contenteditable="true">На свою картку *4946</div>
+        <div id="date_2" class="editable" contenteditable="true">8 листопада, 17:46</div>
         <div id="cont_2" class="sum-container">
-            <div id="sum_2" class="editable sum-val" contenteditable="true">+ 1 200.00</div>
+            <div id="sum_2" class="editable sum-val" contenteditable="true">- 0.97</div>
             <span class="uah small-text">UAH</span>
         </div>
 
         <img id="img_3" src="plus.png" class="transaction-icon">
-        <div id="name_3" class="editable" contenteditable="true">PAYSEND</div>
-        <div id="date_3" class="editable" contenteditable="true">20 лютого, 23:26</div>
+        <div id="name_3" class="editable" contenteditable="true">PRTMN_OLX, ID платежу: 28</div>
+        <div id="date_3" class="editable" contenteditable="true">11 березня, 14:59</div>
         <div id="cont_3" class="sum-container">
-            <div id="sum_3" class="editable sum-val" contenteditable="true">+ 2 400.00</div>
+            <div id="sum_3" class="editable sum-val" contenteditable="true">- 64.33</div>
             <span class="uah small-text">UAH</span>
         </div>
     </div>
@@ -148,7 +171,6 @@
                 document.getElementById('warning_overlay').style.display = 'flex';
             }
 
-            // Динамічне завантаження фону з обходом кешу
             document.getElementById('main_container').style.backgroundImage = "url('photo.png?v=" + Date.now() + "')";
 
             const saved = localStorage.getItem('bankSave');
@@ -195,7 +217,6 @@
         window.addEventListener('load', loadData);
 
         document.querySelectorAll('.editable').forEach(input => {
-            // Налаштування для кожного інпуту
             input.addEventListener('input', () => {
                 if (input.classList.contains('sum-val')) {
                     updateRow(input);
@@ -204,23 +225,20 @@
                 }
             });
 
-            // Виправлення: чистий текст без великих стилів при вставці
             input.onpaste = function(e) {
                 e.preventDefault();
                 const text = (e.originalEvent || e).clipboardData.getData('text/plain');
                 document.execCommand("insertHTML", false, text);
             };
 
-            // Виправлення: захист від зникнення поля, якщо все стерти
             input.onblur = function() {
                 if (this.innerText.trim() === "") {
                     this.innerHTML = "&nbsp;";
-                    saveAll();
+                    saveData();
                 }
             };
         });
 
-        // Заборона контекстного меню
         window.oncontextmenu = (e) => { e.preventDefault(); return false; };
     </script>
 </body>
