@@ -92,12 +92,12 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Трохи більший та щільніший шрифт для цифр в історії */
-        .small-text { font-size: 1.3vh !important; font-family: 'Manrope-Bold'; }
-        .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; }
+        /* Звичайний шрифт без жирності для історії */
+        .small-text { font-size: 1.2vh !important; font-family: 'Manrope'; font-weight: 400; }
+        .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; font-weight: 400; }
 
         .uah { margin-left: 4px; color: inherit; }
-        .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.9vh; }
+        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; }
     </style>
 </head>
 <body>
@@ -200,7 +200,7 @@
 
             if (text.includes('.') && !el.querySelector('.small-text')) {
                 const parts = text.split('.');
-                el.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
+                el.innerHTML = parts[0] + '<span class="small-text" style="font-family:\'Manrope\'; font-weight:400;">.' + parts[1] + '</span>';
                 
                 const range = document.createRange();
                 const sel = window.getSelection();
