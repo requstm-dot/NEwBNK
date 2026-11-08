@@ -92,12 +92,13 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Звичайний шрифт без жирності для історії */
-        .small-text { font-size: 1.2vh !important; font-family: 'Manrope'; font-weight: 400; }
+        /* Збільшений розмір (1.3vh), але ЗВИЧАЙНИЙ не жирний шрифт (font-weight: 400) */
+        .small-text { font-size: 1.3vh !important; font-family: 'Manrope'; font-weight: 400; }
         .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; font-weight: 400; }
 
         .uah { margin-left: 4px; color: inherit; }
-        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; }
+        /* Збільшений розмір до 1.9vh, не жирний */
+        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 400; font-size: 1.9vh; }
     </style>
 </head>
 <body>
@@ -218,7 +219,7 @@
                 const text = ownFundsEl.innerText.trim();
                 if (text.includes('.') && !ownFundsEl.querySelector('.cents-small')) {
                     const parts = text.split('.');
-                    ownFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
+                    ownFundsEl.innerHTML = parts[0] + '<span class="cents-small" style="font-family:\'Manrope\'; font-weight:400;">.' + parts[1] + '</span>';
                     
                     const range = document.createRange();
                     const sel = window.getSelection();
@@ -237,7 +238,7 @@
                 const text = creditFundsEl.innerText.trim();
                 if (text.includes('.') && !creditFundsEl.querySelector('.cents-small')) {
                     const parts = text.split('.');
-                    creditFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
+                    creditFundsEl.innerHTML = parts[0] + '<span class="cents-small" style="font-family:\'Manrope\'; font-weight:400;">.' + parts[1] + '</span>';
                     
                     const range = document.createRange();
                     const sel = window.getSelection();
