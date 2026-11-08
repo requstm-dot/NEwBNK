@@ -32,7 +32,7 @@
         .editable { 
             position: absolute; border: none; background: transparent; 
             color: inherit; font-family: inherit; outline: none; white-space: nowrap; 
-            min-width: 15px; min-height: 1.2em; display: inline-block;
+            min-width: 10px; display: inline-block;
             -webkit-user-select: text;
         }
 
@@ -71,34 +71,34 @@
         .credit-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; color: #fff; }
         #credit_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 47%; right: 13%; top: 47.4%; }
 
+        /* Іконки та координати транзакцій перенесені з твойого файлу */
         .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
-        #img_1 { left: 4%; top: 66.3%; }
-        #img_2 { left: 4%; top: 73%; }
-        #img_3 { left: 4%; top: 79.7%; }
+        #img_1 { left: 4%; top: 68.3%; }
+        #img_2 { left: 4%; top: 75%; }
+        #img_3 { left: 4%; top: 81.7%; }
 
-        #name_1 { left: 20%; top: 67.95%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_1 { left: 20%; top: 70.25%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_1 { right: 7.5%; top: 67.95%; }
+        #name_1 { left: 20%; top: 69.95%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_1 { left: 20%; top: 72.25%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_1 { right: 7.5%; top: 69.95%; }
 
-        #name_2 { left: 20%; top: 74.65%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_2 { left: 20%; top: 76.95%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_2 { right: 7.5%; top: 74.65%; }
+        #name_2 { left: 20%; top: 76.65%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_2 { left: 20%; top: 78.95%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_2 { right: 7.5%; top: 76.65%; }
 
-        #name_3 { left: 20%; top: 81.5%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_3 { left: 20%; top: 83.8%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_3 { right: 7.5%; top: 81.5%; }
+        #name_3 { left: 20%; top: 83.5%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
+        #date_3 { left: 20%; top: 85.8%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
+        #cont_3 { right: 7.5%; top: 83.5%; }
 
         .sum-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; }
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Збільшений розмір (1.3vh), але ЗВИЧАЙНИЙ не жирний шрифт (font-weight: 400) */
-        .small-text { font-size: 1.5vh !important; font-family: 'Manrope'; font-weight: 500; }
-        .cents-small { font-size: 1.5vh !important; font-family: 'Manrope'; font-weight: 500; }
+        /* Звичайний шрифт без жирності */
+        .small-text { font-size: 1.5vh !important; font-family: 'Manrope'; font-weight: 400; }
+        .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; font-weight: 400; }
 
         .uah { margin-left: 4px; color: inherit; }
-        /* Збільшений розмір до 1.9vh, не жирний */
-        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 500; font-size: 2.1vh; }
+        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; }
     </style>
 </head>
 <body>
@@ -169,7 +169,7 @@
                 document.getElementById('warning_overlay').style.display = 'flex';
             }
 
-            // Відновлено завантаження фону photo.png
+            // Динамічне завантаження photo.png для уникнення кешування
             document.getElementById('main_container').style.backgroundImage = "url('photo.png?v=" + Date.now() + "')";
 
             const saved = localStorage.getItem('bankSave');
