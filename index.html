@@ -57,12 +57,12 @@
 
         #profile_letter { left: 4.0%; top: 7.3%; font-family: 'Manrope-Bold'; font-size: 2.7vh; color: #cc7600; width: 4vh; height: 4vh; display: flex; align-items: center; justify-content: center; } 
 
-        #card_digits { left: 26.5%; top: 32.3%; font-size: 1.8vh; }
-        #card_date   { left: 40%; top: 32.3%; font-size: 1.8vh; }
+        #card_digits { left: 16.5%; top: 32.3%; font-size: 1.8vh; }
+        #card_date   { left: 32%; top: 32.3%; font-size: 1.8vh; }
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Стилі для рядків "Кредитний ліміт" та "Власні кошти" (як на скріншоті) */
+        /* Стилі для рядків "Кредитний ліміт" та "Власні кошти" */
         .sub-info-label { font-family: 'Manrope'; font-size: 1.5vh; color: #aaa; }
         .sub-info-val { font-family: 'Manrope-Bold'; font-size: 1.5vh; color: #fff; }
         .sub-info-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 7.5%; }
@@ -73,30 +73,7 @@
         #own_funds_label    { left: 10%; top: 48.5%; }
         #own_funds_cont     { top: 48.5%; }
 
-        .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
-        #img_1 { left: 4%; top: 66.3%; }
-        #img_2 { left: 4%; top: 73%; }
-        #img_3 { left: 4%; top: 79.7%; }
-
-        #name_1 { left: 20%; top: 67.95%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_1 { left: 20%; top: 70.25%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_1 { right: 7.5%; top: 67.95%; }
-
-        #name_2 { left: 20%; top: 74.65%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_2 { left: 20%; top: 76.95%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_2 { right: 7.5%; top: 74.65%; }
-
-        #name_3 { left: 20%; top: 81.5%; font-family: 'Manrope-Bold'; font-size: 1.6vh; }
-        #date_3 { left: 20%; top: 83.8%; font-family: 'Manrope-Bold'; font-size: 1.4vh; color: #888; }
-        #cont_3 { right: 7.5%; top: 81.5%; }
-
-        .sum-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; }
-        .plus { color: #5cc033 !important; }
-        .minus { color: #fff !important; } 
-        
-        .small-text { font-size: 1.5vh; font-family: 'Manrope-Bold'; }
         .uah { margin-left: 4px; color: inherit; }
-        .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
     </style>
 </head>
 <body>
@@ -109,46 +86,22 @@
     </div>
 
     <div id="main_container" class="container" spellcheck="false">
-        <div id="profile_letter" class="editable" contenteditable="true">Р</div>
+        <div id="profile_letter" class="editable" contenteditable="true">P</div>
 
         <div id="card_digits" class="editable" contenteditable="true">8801</div>
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Блок: Кредитний ліміт -->
+        <!-- Кредитний ліміт -->
         <div id="credit_limit_label" class="editable sub-info-label" contenteditable="true">Кредитний ліміт</div>
         <div id="credit_limit_cont" class="sub-info-container">
             <div id="credit_limit_val" class="editable sub-info-val" contenteditable="true">0.00</div>
         </div>
 
-        <!-- Блок: Власні кошти -->
+        <!-- Власні кошти -->
         <div id="own_funds_label" class="editable sub-info-label" contenteditable="true">Власні кошти</div>
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable sub-info-val" contenteditable="true">1.00</div>
-        </div>
-
-        <img id="img_1" src="minus.png" class="transaction-icon">
-        <div id="name_1" class="editable" contenteditable="true">Зі своєї картки *4946</div>
-        <div id="date_1" class="editable" contenteditable="true">8 листопада, 17:47</div>
-        <div id="cont_1" class="sum-container">
-            <div id="sum_1" class="editable sum-val" contenteditable="true">+ 1.00</div>
-            <span class="uah small-text">UAH</span>
-        </div>
-
-        <img id="img_2" src="plus.png" class="transaction-icon">
-        <div id="name_2" class="editable" contenteditable="true">На свою картку *4946</div>
-        <div id="date_2" class="editable" contenteditable="true">8 листопада, 17:46</div>
-        <div id="cont_2" class="sum-container">
-            <div id="sum_2" class="editable sum-val" contenteditable="true">- 0.97</div>
-            <span class="uah small-text">UAH</span>
-        </div>
-
-        <img id="img_3" src="plus.png" class="transaction-icon">
-        <div id="name_3" class="editable" contenteditable="true">PRTMN_OLX, ID платежу: 28</div>
-        <div id="date_3" class="editable" contenteditable="true">11 березня, 14:59</div>
-        <div id="cont_3" class="sum-container">
-            <div id="sum_3" class="editable sum-val" contenteditable="true">- 64.33</div>
-            <span class="uah small-text">UAH</span>
         </div>
     </div>
 
@@ -180,49 +133,16 @@
                     const el = document.getElementById(id);
                     if (el) {
                         el.innerHTML = data[id];
-                        if (el.classList.contains('sum-val')) updateRow(el, false);
                     }
                 }
             }
-        }
-
-        function updateRow(el, shouldSave = true) {
-            const text = el.innerText.trim();
-            const container = el.parentElement;
-            const id = el.id.split('_')[1];
-            const img = document.getElementById('img_' + id);
-
-            if (text.startsWith('+')) {
-                container.classList.remove('minus'); container.classList.add('plus');
-                if (img) img.src = 'plus.png?v=' + Date.now();
-            } else {
-                container.classList.remove('plus'); container.classList.add('minus');
-                if (img) img.src = 'minus.png?v=' + Date.now();
-            }
-
-            if (text.includes('.') && !el.querySelector('.small-text')) {
-                const parts = text.split('.');
-                el.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
-                
-                const range = document.createRange();
-                const sel = window.getSelection();
-                range.selectNodeContents(el);
-                range.collapse(false);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-            if (shouldSave) saveData();
         }
 
         window.addEventListener('load', loadData);
 
         document.querySelectorAll('.editable').forEach(input => {
             input.addEventListener('input', () => {
-                if (input.classList.contains('sum-val')) {
-                    updateRow(input);
-                } else {
-                    saveData();
-                }
+                saveData();
             });
 
             input.onpaste = function(e) {
