@@ -57,14 +57,13 @@
 
         #profile_letter { left: 4.0%; top: 7.3%; font-family: 'Manrope-Bold'; font-size: 2.7vh; color: #cc7600; width: 4vh; height: 4vh; display: flex; align-items: center; justify-content: center; } 
 
-        /* Повернені оригінальні позиції для номера картки та дати */
         #card_digits { left: 26.5%; top: 32.3%; font-size: 1.8vh; }
         #card_date   { left: 40%; top: 32.3%; font-size: 1.8vh; }
 
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Рядок власних коштів (не жирний) */
+        /* Рядок власних коштів з підтримкою меншого шрифту для копійок */
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.5vh; color: #fff; }
         #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 14.3%; top: 47.5%; }
 
@@ -89,7 +88,7 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        .small-text { font-size: 1.5vh; font-family: 'Manrope-Bold'; }
+        .small-text { font-size: 1.3vh; font-family: 'Manrope'; }
         .uah { margin-left: 4px; color: inherit; }
         .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
     </style>
@@ -110,9 +109,9 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Рядок власних коштів -->
+        <!-- Рядок власних коштів (автоматично зменшує частину після крапки) -->
         <div id="own_funds_cont" class="sub-info-container">
-            <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1.00</div>
+            <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="small-text">.00</span></div>
         </div>
 
         <img id="img_1" src="minus.png" class="transaction-icon">
@@ -202,9 +201,31 @@
             if (shouldSave) saveData();
         }
 
+        // Автоматичне форматування копійок для власних коштів під час введення
+        const ownFundsEl = document.getElementById('own_funds_val');
+        if (ownFundsEl) {
+            ownFundsEl.addEventListener('input', () => {
+                const text = ownFundsEl.innerText.trim();
+                if (text.includes('.') && !ownFundsEl.querySelector('.small-text')) {
+                    const parts = text.split('.');
+                    ownFundsEl.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
+                    
+                    const range = document.createRange();
+                    const sel = window.getSelection();
+                    range.selectNodeContents(ownFundsEl);
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                saveData();
+            });
+        }
+
         window.addEventListener('load', loadData);
 
         document.querySelectorAll('.editable').forEach(input => {
+            if (input.id === 'own_funds_val') return; // оброблено вище
+
             input.addEventListener('input', () => {
                 if (input.classList.contains('sum-val')) {
                     updateRow(input);
