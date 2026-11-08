@@ -62,16 +62,9 @@
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Стилі для рядків "Кредитний ліміт" та "Власні кошти" */
-        .sub-info-label { font-family: 'Manrope'; font-size: 1.5vh; color: #aaa; }
+        /* Тільки рядок цифри власних коштів праворуч */
         .sub-info-val { font-family: 'Manrope-Bold'; font-size: 1.5vh; color: #fff; }
-        .sub-info-container { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 7.5%; }
-
-        #credit_limit_label { left: 10%; top: 45.2%; }
-        #credit_limit_cont  { top: 45.2%; }
-
-        #own_funds_label    { left: 10%; top: 48.5%; }
-        #own_funds_cont     { top: 48.5%; }
+        #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 7.5%; top: 48.5%; }
 
         .uah { margin-left: 4px; color: inherit; }
     </style>
@@ -92,14 +85,7 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Кредитний ліміт -->
-        <div id="credit_limit_label" class="editable sub-info-label" contenteditable="true">Кредитний ліміт</div>
-        <div id="credit_limit_cont" class="sub-info-container">
-            <div id="credit_limit_val" class="editable sub-info-val" contenteditable="true">0.00</div>
-        </div>
-
-        <!-- Власні кошти -->
-        <div id="own_funds_label" class="editable sub-info-label" contenteditable="true">Власні кошти</div>
+        <!-- Тільки значення власних коштів -->
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable sub-info-val" contenteditable="true">1.00</div>
         </div>
