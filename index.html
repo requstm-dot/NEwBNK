@@ -67,7 +67,7 @@
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; color: #fff; }
         #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 47%; right: 13%; top: 44.1%; }
 
-        /* Кредитні кошти (розміщені трохи нижче власних) */
+        /* Кредитні кошти */
         .credit-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; color: #fff; }
         #credit_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 47%; right: 13%; top: 47.4%; }
 
@@ -92,12 +92,12 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Змінено на звичайний нежирний шрифт */
-        .small-text { font-size: 1.2vh !important; font-family: 'Manrope'; font-weight: 400; }
-        .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; font-weight: 400; }
+        /* Трохи більший та щільніший шрифт для цифр в історії */
+        .small-text { font-size: 1.3vh !important; font-family: 'Manrope-Bold'; }
+        .cents-small { font-size: 1.3vh !important; font-family: 'Manrope'; }
 
         .uah { margin-left: 4px; color: inherit; }
-        .sum-val { position: static !important; font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; }
+        .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.9vh; }
     </style>
 </head>
 <body>
@@ -120,7 +120,6 @@
             <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="cents-small">.00</span></div>
         </div>
 
-        <!-- Кредитні кошти -->
         <div id="credit_funds_cont" class="sub-info-container">
             <div id="credit_funds_val" class="editable credit-funds-val" contenteditable="true">0<span class="cents-small">.00</span></div>
         </div>
@@ -201,7 +200,7 @@
 
             if (text.includes('.') && !el.querySelector('.small-text')) {
                 const parts = text.split('.');
-                el.innerHTML = parts[0] + '<span class="small-text" style="font-family:\'Manrope\'; font-weight:400;">.' + parts[1] + '</span>';
+                el.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
                 
                 const range = document.createRange();
                 const sel = window.getSelection();
@@ -222,4 +221,63 @@
                     ownFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
                     
                     const range = document.createRange();
-                    const sel = window.getSelection
+                    const sel = window.getSelection();
+                    range.selectNodeContents(ownFundsEl);
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                saveData();
+            });
+        }
+
+        const creditFundsEl = document.getElementById('credit_funds_val');
+        if (creditFundsEl) {
+            creditFundsEl.addEventListener('input', () => {
+                const text = creditFundsEl.innerText.trim();
+                if (text.includes('.') && !creditFundsEl.querySelector('.cents-small')) {
+                    const parts = text.split('.');
+                    creditFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
+                    
+                    const range = document.createRange();
+                    const sel = window.getSelection();
+                    range.selectNodeContents(creditFundsEl);
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                saveData();
+            });
+        }
+
+        window.addEventListener('load', loadData);
+
+        document.querySelectorAll('.editable').forEach(input => {
+            if (input.id === 'own_funds_val' || input.id === 'credit_funds_val') return;
+
+            input.addEventListener('input', () => {
+                if (input.classList.contains('sum-val')) {
+                    updateRow(input);
+                } else {
+                    saveData();
+                }
+            });
+
+            input.onpaste = function(e) {
+                e.preventDefault();
+                const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand("insertHTML", false, text);
+            };
+
+            input.onblur = function() {
+                if (this.innerText.trim() === "") {
+                    this.innerHTML = "&nbsp;";
+                    saveData();
+                }
+            };
+        });
+
+        window.oncontextmenu = (e) => { e.preventDefault(); return false; };
+    </script>
+</body>
+</html>
