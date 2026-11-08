@@ -63,9 +63,9 @@
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Власні кошти (зміщено лівіше за рахунок зменшення відступу праворуч `right: 17.5%`) */
+        /* Власні кошти (зміщено трохи правіше, розмір шрифту копійок стандартний) */
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.5vh; color: #fff; }
-        #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 17.5%; top: 47.5%; }
+        #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 14.3%; top: 47.5%; }
 
         .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
         #img_1 { left: 4%; top: 66.3%; }
@@ -88,11 +88,9 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Зменшені копійки для рядків операцій */
+        /* Стандартний зменшений розмір для копійок у всіх блоках */
         .small-text { font-size: 1.2vh !important; font-family: 'Manrope-Bold'; }
-        
-        /* Ще менші копійки спеціально для власних коштів */
-        .cents-small { font-size: 1.0vh !important; font-family: 'Manrope'; }
+        .cents-small { font-size: 1.2vh !important; font-family: 'Manrope'; }
 
         .uah { margin-left: 4px; color: inherit; }
         .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
@@ -114,7 +112,7 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Рядок власних коштів (зміщено лівіше, копійки зменшено) -->
+        <!-- Рядок власних коштів (зміщено правіше, копійки більші) -->
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="cents-small">.00</span></div>
         </div>
@@ -193,67 +191,4 @@
             }
 
             if (text.includes('.') && !el.querySelector('.small-text')) {
-                const parts = text.split('.');
-                el.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
-                
-                const range = document.createRange();
-                const sel = window.getSelection();
-                range.selectNodeContents(el);
-                range.collapse(false);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-            if (shouldSave) saveData();
-        }
-
-        // Обробка для власних коштів із меншими копійками
-        const ownFundsEl = document.getElementById('own_funds_val');
-        if (ownFundsEl) {
-            ownFundsEl.addEventListener('input', () => {
-                const text = ownFundsEl.innerText.trim();
-                if (text.includes('.') && !ownFundsEl.querySelector('.cents-small')) {
-                    const parts = text.split('.');
-                    ownFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
-                    
-                    const range = document.createRange();
-                    const sel = window.getSelection();
-                    range.selectNodeContents(ownFundsEl);
-                    range.collapse(false);
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                }
-                saveData();
-            });
-        }
-
-        window.addEventListener('load', loadData);
-
-        document.querySelectorAll('.editable').forEach(input => {
-            if (input.id === 'own_funds_val') return;
-
-            input.addEventListener('input', () => {
-                if (input.classList.contains('sum-val')) {
-                    updateRow(input);
-                } else {
-                    saveData();
-                }
-            });
-
-            input.onpaste = function(e) {
-                e.preventDefault();
-                const text = (e.originalEvent || e).clipboardData.getData('text/plain');
-                document.execCommand("insertHTML", false, text);
-            };
-
-            input.onblur = function() {
-                if (this.innerText.trim() === "") {
-                    this.innerHTML = "&nbsp;";
-                    saveData();
-                }
-            };
-        });
-
-        window.oncontextmenu = (e) => { e.preventDefault(); return false; };
-    </script>
-</body>
-</html>
+                const parts = text.split
