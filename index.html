@@ -63,7 +63,7 @@
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Рядок власних коштів з підтримкою меншого шрифту для копійок */
+        /* Власні кошти */
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.5vh; color: #fff; }
         #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 14.3%; top: 47.5%; }
 
@@ -88,7 +88,9 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        .small-text { font-size: 1.3vh; font-family: 'Manrope'; }
+        /* Зменшені копійки для всіх блоків */
+        .small-text, .cents-small { font-size: 1.2vh !important; font-family: 'Manrope-Bold'; }
+        .own-funds-val .cents-small { font-family: 'Manrope'; }
         .uah { margin-left: 4px; color: inherit; }
         .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
     </style>
@@ -109,16 +111,16 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Рядок власних коштів (автоматично зменшує частину після крапки) -->
+        <!-- Рядок власних коштів -->
         <div id="own_funds_cont" class="sub-info-container">
-            <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="small-text">.00</span></div>
+            <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="cents-small">.00</span></div>
         </div>
 
         <img id="img_1" src="minus.png" class="transaction-icon">
         <div id="name_1" class="editable" contenteditable="true">Зі своєї картки *4946</div>
         <div id="date_1" class="editable" contenteditable="true">8 листопада, 17:47</div>
         <div id="cont_1" class="sum-container">
-            <div id="sum_1" class="editable sum-val" contenteditable="true">+ 1.00</div>
+            <div id="sum_1" class="editable sum-val" contenteditable="true">+ 1<span class="small-text">.00</span></div>
             <span class="uah small-text">UAH</span>
         </div>
 
@@ -126,7 +128,7 @@
         <div id="name_2" class="editable" contenteditable="true">На свою картку *4946</div>
         <div id="date_2" class="editable" contenteditable="true">8 листопада, 17:46</div>
         <div id="cont_2" class="sum-container">
-            <div id="sum_2" class="editable sum-val" contenteditable="true">- 0.97</div>
+            <div id="sum_2" class="editable sum-val" contenteditable="true">- 0<span class="small-text">.97</span></div>
             <span class="uah small-text">UAH</span>
         </div>
 
@@ -134,7 +136,7 @@
         <div id="name_3" class="editable" contenteditable="true">PRTMN_OLX, ID платежу: 28</div>
         <div id="date_3" class="editable" contenteditable="true">11 березня, 14:59</div>
         <div id="cont_3" class="sum-container">
-            <div id="sum_3" class="editable sum-val" contenteditable="true">- 64.33</div>
+            <div id="sum_3" class="editable sum-val" contenteditable="true">- 64<span class="small-text">.33</span></div>
             <span class="uah small-text">UAH</span>
         </div>
     </div>
@@ -201,14 +203,14 @@
             if (shouldSave) saveData();
         }
 
-        // Автоматичне форматування копійок для власних коштів під час введення
+        // Обробка для власних коштів
         const ownFundsEl = document.getElementById('own_funds_val');
         if (ownFundsEl) {
             ownFundsEl.addEventListener('input', () => {
                 const text = ownFundsEl.innerText.trim();
-                if (text.includes('.') && !ownFundsEl.querySelector('.small-text')) {
+                if (text.includes('.') && !ownFundsEl.querySelector('.cents-small')) {
                     const parts = text.split('.');
-                    ownFundsEl.innerHTML = parts[0] + '<span class="small-text">.' + parts[1] + '</span>';
+                    ownFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
                     
                     const range = document.createRange();
                     const sel = window.getSelection();
@@ -224,7 +226,7 @@
         window.addEventListener('load', loadData);
 
         document.querySelectorAll('.editable').forEach(input => {
-            if (input.id === 'own_funds_val') return; // оброблено вище
+            if (input.id === 'own_funds_val') return;
 
             input.addEventListener('input', () => {
                 if (input.classList.contains('sum-val')) {
