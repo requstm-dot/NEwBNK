@@ -57,12 +57,14 @@
 
         #profile_letter { left: 4.0%; top: 7.3%; font-family: 'Manrope-Bold'; font-size: 2.7vh; color: #cc7600; width: 4vh; height: 4vh; display: flex; align-items: center; justify-content: center; } 
 
-        #card_digits { left: 16.5%; top: 32.3%; font-size: 1.8vh; }
-        #card_date   { left: 32%; top: 32.3%; font-size: 1.8vh; }
+        /* Повернені оригінальні позиції для номера картки та дати */
+        #card_digits { left: 26.5%; top: 32.3%; font-size: 1.8vh; }
+        #card_date   { left: 40%; top: 32.3%; font-size: 1.8vh; }
+
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Менш жирний рядок власних коштів */
+        /* Рядок власних коштів (не жирний) */
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.5vh; color: #fff; }
         #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 7.5%; top: 48.5%; }
 
@@ -108,7 +110,7 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Доданий рядок власних коштів (не жирний) -->
+        <!-- Рядок власних коштів -->
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1.00</div>
         </div>
