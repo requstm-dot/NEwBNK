@@ -63,9 +63,9 @@
         #balance { left: 50%; top: 38.8%; font-size: 2.3vh; transform: translateX(-50%); text-align: center; white-space: nowrap; }
         #balance span { font-size: 2vh; }
 
-        /* Власні кошти */
+        /* Власні кошти (зміщено лівіше за рахунок зменшення відступу праворуч `right: 17.5%`) */
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.5vh; color: #fff; }
-        #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 14.3%; top: 47.5%; }
+        #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 45%; right: 17.5%; top: 47.5%; }
 
         .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
         #img_1 { left: 4%; top: 66.3%; }
@@ -88,9 +88,12 @@
         .plus { color: #5cc033 !important; }
         .minus { color: #fff !important; } 
         
-        /* Зменшені копійки для всіх блоків */
-        .small-text, .cents-small { font-size: 1.2vh !important; font-family: 'Manrope-Bold'; }
-        .own-funds-val .cents-small { font-family: 'Manrope'; }
+        /* Зменшені копійки для рядків операцій */
+        .small-text { font-size: 1.2vh !important; font-family: 'Manrope-Bold'; }
+        
+        /* Ще менші копійки спеціально для власних коштів */
+        .cents-small { font-size: 1.0vh !important; font-family: 'Manrope'; }
+
         .uah { margin-left: 4px; color: inherit; }
         .sum-val { position: static !important; font-family: 'Manrope-Bold'; font-size: 1.7vh; }
     </style>
@@ -111,7 +114,7 @@
         <div id="card_date"   class="editable" contenteditable="true">12 / 29</div>
         <div id="balance" class="editable" contenteditable="true">1<span>.00 UAH</span></div>
 
-        <!-- Рядок власних коштів -->
+        <!-- Рядок власних коштів (зміщено лівіше, копійки зменшено) -->
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="cents-small">.00</span></div>
         </div>
@@ -203,7 +206,7 @@
             if (shouldSave) saveData();
         }
 
-        // Обробка для власних коштів
+        // Обробка для власних коштів із меншими копійками
         const ownFundsEl = document.getElementById('own_funds_val');
         if (ownFundsEl) {
             ownFundsEl.addEventListener('input', () => {
