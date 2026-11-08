@@ -67,6 +67,10 @@
         .own-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; color: #fff; }
         #own_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 47%; right: 13%; top: 47.5%; }
 
+        /* Кредитні кошти (розміщені трохи нижче власних) */
+        .credit-funds-val { font-family: 'Manrope'; font-weight: 400; font-size: 1.7vh; color: #fff; }
+        #credit_funds_cont { position: absolute; display: flex; align-items: baseline; justify-content: flex-end; width: 47%; right: 13%; top: 50.8%; }
+
         .transaction-icon { position: absolute; object-fit: contain; pointer-events: none; width: 8vh; height: 8vh; }
         #img_1 { left: 4%; top: 66.3%; }
         #img_2 { left: 4%; top: 73%; }
@@ -113,6 +117,11 @@
 
         <div id="own_funds_cont" class="sub-info-container">
             <div id="own_funds_val" class="editable own-funds-val" contenteditable="true">1<span class="cents-small">.00</span></div>
+        </div>
+
+        <!-- Кредитні кошти -->
+        <div id="credit_funds_cont" class="sub-info-container">
+            <div id="credit_funds_val" class="editable credit-funds-val" contenteditable="true">0<span class="cents-small">.00</span></div>
         </div>
 
         <img id="img_1" src="minus.png" class="transaction-icon">
@@ -222,10 +231,30 @@
             });
         }
 
+        /* Автоматичне форматування копійок для кредитних коштів */
+        const creditFundsEl = document.getElementById('credit_funds_val');
+        if (creditFundsEl) {
+            creditFundsEl.addEventListener('input', () => {
+                const text = creditFundsEl.innerText.trim();
+                if (text.includes('.') && !creditFundsEl.querySelector('.cents-small')) {
+                    const parts = text.split('.');
+                    creditFundsEl.innerHTML = parts[0] + '<span class="cents-small">.' + parts[1] + '</span>';
+                    
+                    const range = document.createRange();
+                    const sel = window.getSelection();
+                    range.selectNodeContents(creditFundsEl);
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                saveData();
+            });
+        }
+
         window.addEventListener('load', loadData);
 
         document.querySelectorAll('.editable').forEach(input => {
-            if (input.id === 'own_funds_val') return;
+            if (input.id === 'own_funds_val' || input.id === 'credit_funds_val') return;
 
             input.addEventListener('input', () => {
                 if (input.classList.contains('sum-val')) {
